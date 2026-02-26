@@ -1,0 +1,19 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Import GPG key
+    ansible.builtin.rpm_key:
+      state: present
+      key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    when: ansible_distribution =="RedHat"
+
+  - name: install apache and php packages
+    package:
+      name: 
+        - "{{ apache_package }}"
+        - "{{ php_package }}"
+      state: latest
+      update_cache: yes
